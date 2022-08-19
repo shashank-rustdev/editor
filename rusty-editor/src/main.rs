@@ -1,6 +1,7 @@
 mod clear;
 use clear::*;
 mod read;
+use crossterm::cursor::{DisableBlinking, EnableBlinking, MoveTo, RestorePosition, SavePosition};
 use crossterm::event::{
     KeyboardEnhancementFlags, PopKeyboardEnhancementFlags, PushKeyboardEnhancementFlags,
 };
@@ -13,6 +14,7 @@ use crossterm::{
     terminal::{disable_raw_mode, enable_raw_mode},
     Result,
 };
+
 use read::*;
 use std::io::stdout;
 
@@ -32,6 +34,14 @@ fn main() -> Result<()> {
                 | KeyboardEnhancementFlags::REPORT_ALL_KEYS_AS_ESCAPE_CODES
                 | KeyboardEnhancementFlags::REPORT_EVENT_TYPES
         )
+    )?;
+    execute!(
+        stdout,
+        SavePosition,
+        MoveTo(0, 0),
+        EnableBlinking,
+        DisableBlinking,
+        RestorePosition
     )?;
 
     if let Err(e) = read_event() {
