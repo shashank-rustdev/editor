@@ -4,7 +4,7 @@ macro_rules! prompt {
         prompt!($output, $args, callback = |&_, _, _| {})
     };
     ($output:expr,$args:tt, callback = $callback:expr) => {{
-        let output: &mut Output = $output;
+        let output: &mut Terminal = $output;
         let mut input = String::with_capacity(32);
         loop {
             output.status_message.set_message(format!($args, input));
